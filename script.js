@@ -1,20 +1,19 @@
-const btn = document.querySelector("button");
+const btn = document.getElementById("call-button");
 const statusDiv = document.getElementById("status");
 const attendingPanel = document.getElementById("attending-panel");
 
-console.log("Script carregado");
-console.log("Botão encontrado:", !!btn);
-console.log("Status div encontrado:", !!statusDiv);
-console.log("Attending panel encontrado:", !!attendingPanel);
+// console.log("Script carregado");
+// console.log("Botão encontrado:", !!btn);
+// console.log("Status div encontrado:", !!statusDiv);
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/service-worker.js')
     .catch(err => console.log("Service worker não encontrado (normal)"));
 }
 
-if (btn && statusDiv && attendingPanel) {
+if (btn) {
   btn.onclick = function () {
-    console.log("Botão clicado!"); // Debug
+    console.log("Botão clicado!"); 
     showStatus("⏳ Chamando...", "loading");
 
     fetch("https://dev.moviik.com/api/tickets", {
@@ -30,20 +29,20 @@ if (btn && statusDiv && attendingPanel) {
       })
     })
     .then(response => {
-      console.log("Resposta recebida:", response.status); // Debug
+      console.log("Resposta recebida:", response.status); 
       if (!response.ok) throw new Error("Erro na resposta");
       return response.json();
     })
     .then(data => {
-      console.log("Sucesso:", data); // Debug
-      console.log("Estado do ticket:", data.state); // Debug específico
+      console.log("Sucesso:", data); 
+      console.log("Estado do ticket:", data.state); 
       
       // Verificar se o ticket está em estado "attending"
       if (data && data.state === 'attending') {
-        console.log("Mostrando botões de atendimento"); // Debug
+        console.log("Mostrando botões de atendimento"); 
         showAttendingButtons(data);
       } else {
-        console.log("Mostrando ticket chamado"); // Debug
+        console.log("Mostrando ticket chamado"); 
         // Mostrar ticket chamado
         const ticketNumber = data.number || data.ticket?.number || 'N/A';
         showTicketCalled(ticketNumber);
@@ -94,7 +93,7 @@ function showTicketCalled(ticketNumber) {
 }
 
 function showAttendingButtons(ticket) {
-  console.log("showAttendingButtons chamada com:", ticket); // Debug
+  console.log("showAttendingButtons chamada com:", ticket); 
   const attendingPanel = document.getElementById("attending-panel");
   if (attendingPanel) {
     attendingPanel.innerHTML = `
@@ -114,7 +113,6 @@ function showAttendingButtons(ticket) {
     attendingPanel.className = "attending";
     attendingPanel.style.display = "block";
     console.log("Botões de atendimento exibidos permanentemente até ação bem-sucedida"); 
-    // BOTÕES PERMANECEM VISÍVEIS ATÉ AÇÃO BEM-SUCEDIDA
   }
 }
 
@@ -128,7 +126,7 @@ function hideAttendingButtons() {
 
 function finishTicket(ticketId) {
   console.log("Finalizando ticket:", ticketId);
-  showStatus("⏳ Finalizando atendimento...", "loading", false); // SEM timeout
+  showStatus("⏳ Finalizando atendimento...", "loading", false); 
   
   fetch("https://dev.moviik.com/api/tickets", {
     method: "POST",
@@ -149,8 +147,8 @@ function finishTicket(ticketId) {
   })
   .then(data => {
     console.log("Atendimento finalizado:", data);
-    hideAttendingButtons(); // Esconde os botões
-    showStatus("✅ Atendimento finalizado!", "success"); // COM timeout normal
+    hideAttendingButtons(); 
+    showStatus("✅ Atendimento finalizado!", "success"); 
   })
   .catch(error => {
     console.error("Erro ao finalizar:", error);
@@ -160,7 +158,7 @@ function finishTicket(ticketId) {
 
 function cancelTicket(ticketId) {
   console.log("Cancelando ticket:", ticketId);
-  showStatus("⏳ Cancelando atendimento...", "loading", false); // SEM timeout
+  showStatus("⏳ Cancelando atendimento...", "loading", false); 
   
   fetch("https://dev.moviik.com/api/tickets", {
     method: "POST",
@@ -179,8 +177,8 @@ function cancelTicket(ticketId) {
   })
   .then(data => {
     console.log("Atendimento cancelado:", data);
-    hideAttendingButtons(); // Esconde os botões
-    showStatus("✅ Atendimento cancelado!", "success"); // COM timeout normal
+    hideAttendingButtons(); 
+    showStatus("✅ Atendimento cancelado!", "success"); 
   })
   .catch(error => {
     console.error("Erro ao cancelar:", error);
