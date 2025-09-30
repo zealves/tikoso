@@ -72,14 +72,14 @@ button:active {
   padding: 15px;
 }
 
-#attending-panel {
+#attendingPanel {
   margin-top: 15px;
   padding: 15px;
   border-radius: 5px;
   font-weight: bold;
 }
 
-#attending-panel.attending {
+#attendingPanel.attending {
   background-color: #fff3cd;
   color: #856404;
   border: 1px solid #ffeaa7;
