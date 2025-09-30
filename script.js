@@ -180,75 +180,60 @@ function hideAttendingButtons() {
 }
 
 function finishTicket(ticketId) {
-  console.log("Finalizando ticket:", ticketId);
   showStatus("⏳ Finalizando atendimento...", "loading", false); 
-  
-  // Simular um pequeno delay para mostrar o status
-  setTimeout(function() {
+
+  fetch("https://dev.moviik.com/api/tickets", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer gyOaS0IhFOCkP0dvFlKC4rZK4O19f9m9"
+    },
+    body: JSON.stringify({
+      action: "terminate",
+      ticket: ticketId,
+      counter: "6",
+      user: "1"
+    })
+  })
+  .then(response => {
+    if (!response.ok) throw new Error("Erro ao finalizar");
+    return response.json();
+  })
+  .then(data => {
+    console.log("Atendimento finalizado:", data);
     hideAttendingButtons(); 
     showStatus("✅ Atendimento finalizado!", "success"); 
-  }, 1000);
-  
-  // fetch("https://dev.moviik.com/api/tickets", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     "Authorization": "Bearer gyOaS0IhFOCkP0dvFlKC4rZK4O19f9m9"
-  //   },
-  //   body: JSON.stringify({
-  //     action: "terminate",
-  //     ticket: ticketId,
-  //     counter: "6",
-  //     user: "1"
-  //   })
-  // })
-  // .then(response => {
-  //   if (!response.ok) throw new Error("Erro ao finalizar");
-  //   return response.json();
-  // })
-  // .then(data => {
-  //   console.log("Atendimento finalizado:", data);
-  //   hideAttendingButtons(); 
-  //   showStatus("✅ Atendimento finalizado!", "success"); 
-  // })
-  // .catch(error => {
-  //   console.error("Erro ao finalizar:", error);
-  //   showStatus("❌ Erro ao finalizar", "error");
-  // });
+  })
+  .catch(error => {
+    console.error("Erro ao finalizar:", error);
+    showStatus("❌ Erro ao finalizar", "error");
+  });
 }
 
 function cancelTicket(ticketId) {
-  console.log("Cancelando ticket:", ticketId);
-  showStatus("⏳ Cancelando atendimento...", "loading", false); 
-  
-  // Simular um pequeno delay para mostrar o status
-  setTimeout(function() {
+  showStatus("⏳ Cancelando atendimento...", "loading", false);
+  fetch("https://dev.moviik.com/api/tickets", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer gyOaS0IhFOCkP0dvFlKC4rZK4O19f9m9"
+    },
+    body: JSON.stringify({
+      action: "cancel",
+      ticket: ticketId
+    })
+  })
+  .then(response => {
+    if (!response.ok) throw new Error("Erro ao cancelar");
+    return response.json();
+  })
+  .then(data => {
+    console.log("Atendimento cancelado:", data);
     hideAttendingButtons(); 
     showStatus("✅ Atendimento cancelado!", "success"); 
-  }, 1000);
-  
-  // fetch("https://dev.moviik.com/api/tickets", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     "Authorization": "Bearer gyOaS0IhFOCkP0dvFlKC4rZK4O19f9m9"
-  //   },
-  //   body: JSON.stringify({
-  //     action: "cancel",
-  //     ticket: ticketId
-  //   })
-  // })
-  // .then(response => {
-  //   if (!response.ok) throw new Error("Erro ao cancelar");
-  //   return response.json();
-  // })
-  // .then(data => {
-  //   console.log("Atendimento cancelado:", data);
-  //   hideAttendingButtons(); 
-  //   showStatus("✅ Atendimento cancelado!", "success"); 
-  // })
-  // .catch(error => {
-  //   console.error("Erro ao cancelar:", error);
-  //   showStatus("❌ Erro ao cancelar", "error");
-  // });
+  })
+  .catch(error => {
+    console.error("Erro ao cancelar:", error);
+    showStatus("❌ Erro ao cancelar", "error");
+  });
 }
