@@ -136,37 +136,58 @@ function showTicketCalled(ticketLabel) {
 function showAttendingButtons(ticket) {
   console.log("showAttendingButtons chamada com:", ticket); 
   const attendingPanel = document.getElementById("attendingPanel");
+  const callButton = document.getElementById("callButton");
+  
   if (attendingPanel) {
     attendingPanel.innerHTML = 
       '<div class="attending-status">' +
         '<p>🎫 Ticket em atendimento</p>' +
         '<p><strong>Número:</strong> ' + (ticket.label || 'N/A') + '</p>' +
         '<div class="action-buttons">' +
-          '<button onclick="finishTicket(\'' + (ticket.id || ticket.code) + '\')" class="finish-btn">' +
+          '<button onclick="finishTicket(\'' + (ticket.id || ticket.code) + '\')" class="finish-btn big-btn">' +
             '✅ Finalizar Atendimento' +
           '</button>' +
-          '<button onclick="cancelTicket(\'' + (ticket.code || ticket.id) + '\')" class="cancel-btn">' +
+          '<button onclick="cancelTicket(\'' + (ticket.code || ticket.id) + '\')" class="cancel-btn big-btn">' +
             '❌ Cancelar Atendimento' +
           '</button>' +
         '</div>' +
       '</div>';
     attendingPanel.className = "attending";
     attendingPanel.style.display = "block";
+    
+    // Esconder o botão de chamar
+    if (callButton) {
+      callButton.style.display = "none";
+    }
+    
     console.log("Botões de atendimento exibidos permanentemente até ação bem-sucedida"); 
   }
 }
 
 function hideAttendingButtons() {
-  // const attendingPanel = document.getElementById("attending-panel");
-  // if (attendingPanel) {
-  //   attendingPanel.style.display = "none";
-  //   attendingPanel.innerHTML = "";
-  // }
+  const attendingPanel = document.getElementById("attendingPanel");
+  const callButton = document.getElementById("callButton");
+  
+  if (attendingPanel) {
+    attendingPanel.style.display = "none";
+    attendingPanel.innerHTML = "";
+  }
+  
+  // Mostrar novamente o botão de chamar
+  if (callButton) {
+    callButton.style.display = "block";
+  }
 }
 
 function finishTicket(ticketId) {
-  // console.log("Finalizando ticket:", ticketId);
-  // showStatus("⏳ Finalizando atendimento...", "loading", false); 
+  console.log("Finalizando ticket:", ticketId);
+  showStatus("⏳ Finalizando atendimento...", "loading", false); 
+  
+  // Simular um pequeno delay para mostrar o status
+  setTimeout(function() {
+    hideAttendingButtons(); 
+    showStatus("✅ Atendimento finalizado!", "success"); 
+  }, 1000);
   
   // fetch("https://dev.moviik.com/api/tickets", {
   //   method: "POST",
@@ -197,8 +218,14 @@ function finishTicket(ticketId) {
 }
 
 function cancelTicket(ticketId) {
-  // console.log("Cancelando ticket:", ticketId);
-  // showStatus("⏳ Cancelando atendimento...", "loading", false); 
+  console.log("Cancelando ticket:", ticketId);
+  showStatus("⏳ Cancelando atendimento...", "loading", false); 
+  
+  // Simular um pequeno delay para mostrar o status
+  setTimeout(function() {
+    hideAttendingButtons(); 
+    showStatus("✅ Atendimento cancelado!", "success"); 
+  }, 1000);
   
   // fetch("https://dev.moviik.com/api/tickets", {
   //   method: "POST",
