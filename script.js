@@ -12,7 +12,7 @@ if ('serviceWorker' in navigator) {
 }
 
 function callNext() {
-   showStatus("⏳ Chamando...", "loading", false);
+    showStatus("⏳ Chamando...", "loading", false);
 
     fetch("https://dev.moviik.com/api/tickets", {
       method: "POST",
@@ -32,18 +32,11 @@ function callNext() {
       return response.json();
     })
     .then(data => {
-      console.log("Sucesso:", data); 
-      console.log("Estado do ticket:", data.state); 
-      
-      // Verificar se o ticket está em estado "attending"
       if (data && data.state === 'attending') {
-        console.log("Mostrando botões de atendimento"); 
         showAttendingButtons(data);
       } else {
-        console.log("Mostrando ticket chamado"); 
-        // Mostrar ticket chamado
-        const ticketNumber = data.number || data.ticket?.number || 'N/A';
-        showTicketCalled(ticketNumber);
+        const ticketLabel = data.label || 'N/A';
+        showTicketCalled(ticketLabel);
       }
     })
     .catch(error => {
@@ -101,7 +94,7 @@ function callNext() {
 
 function showStatus(message, type, hasTimeout = true) {
   const statusDiv = document.getElementById("status");
-  if (statusDiv) {
+  // if (statusDiv) {
     statusDiv.innerText = message;
     statusDiv.className = type;
     statusDiv.style.display = "block";
@@ -112,16 +105,16 @@ function showStatus(message, type, hasTimeout = true) {
         statusDiv.style.display = "none";
       }, 3000);
     }
-  }
+  // }
 }
 
-function showTicketCalled(ticketNumber) {
+function showTicketCalled(ticketLabel) {
   // const statusDiv = document.getElementById("status");
   // if (statusDiv) {
   //   statusDiv.innerHTML = `
   //     <div class="ticket-called">
   //       <p>📢 Ticket Chamado</p>
-  //       <p><strong>Número:</strong> ${ticketNumber}</p>
+  //       <p><strong>Número:</strong> ${ticketLabel}</p>
   //     </div>
   //   `;
   //   statusDiv.className = "called";
