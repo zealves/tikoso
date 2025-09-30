@@ -32,6 +32,7 @@ function callNext() {
       return response.json();
     })
     .then(data => {
+      hideStatus();
       if (data && data.state === 'attending') {
         showAttendingButtons(data);
       } else {
@@ -102,10 +103,15 @@ function showStatus(message, type, hasTimeout = true) {
     // Só aplicar timeout se hasTimeout for true
     if (hasTimeout) {
       setTimeout(() => {
-        statusDiv.style.display = "none";
+        hideStatus();
       }, 3000);
     }
   // }
+}
+
+function hideStatus() {
+  const statusDiv = document.getElementById("status");
+  statusDiv.style.display = "none";
 }
 
 function showTicketCalled(ticketLabel) {
