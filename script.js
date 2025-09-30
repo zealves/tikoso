@@ -128,27 +128,26 @@ function showTicketCalled(ticketLabel) {
 }
 
 function showAttendingButtons(ticket) {
-  // console.log("showAttendingButtons chamada com:", ticket); 
-  // const attendingPanel = document.getElementById("attending-panel");
-  // if (attendingPanel) {
-  //   attendingPanel.innerHTML = `
-  //     <div class="attending-status">
-  //       <p>🎫 Ticket em atendimento</p>
-  //       <p><strong>Número:</strong> ${ticket.label || 'N/A'}</p>
-  //       <div class="action-buttons">
-  //         <button onclick="finishTicket('${ticket.id || ticket.code}')" class="finish-btn">
-  //           ✅ Finalizar Atendimento
-  //         </button>
-  //         <button onclick="cancelTicket('${ticket.code || ticket.id}')" class="cancel-btn">
-  //           ❌ Cancelar Atendimento
-  //         </button>
-  //       </div>
-  //     </div>
-  //   `;
-  //   attendingPanel.className = "attending";
-  //   attendingPanel.style.display = "block";
-  //   console.log("Botões de atendimento exibidos permanentemente até ação bem-sucedida"); 
-  // }
+  console.log("showAttendingButtons chamada com:", ticket); 
+  const attendingPanel = document.getElementById("attendingPanel");
+  if (attendingPanel) {
+    attendingPanel.innerHTML = 
+      '<div class="attending-status">' +
+        '<p>🎫 Ticket em atendimento</p>' +
+        '<p><strong>Número:</strong> ' + (ticket.label || 'N/A') + '</p>' +
+        '<div class="action-buttons">' +
+          '<button onclick="finishTicket(\'' + (ticket.id || ticket.code) + '\')" class="finish-btn">' +
+            '✅ Finalizar Atendimento' +
+          '</button>' +
+          '<button onclick="cancelTicket(\'' + (ticket.code || ticket.id) + '\')" class="cancel-btn">' +
+            '❌ Cancelar Atendimento' +
+          '</button>' +
+        '</div>' +
+      '</div>';
+    attendingPanel.className = "attending";
+    attendingPanel.style.display = "block";
+    console.log("Botões de atendimento exibidos permanentemente até ação bem-sucedida"); 
+  }
 }
 
 function hideAttendingButtons() {
